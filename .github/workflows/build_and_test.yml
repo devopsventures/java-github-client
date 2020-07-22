@@ -13,9 +13,9 @@ jobs:
     container:
       image: maven:3.6.3-jdk-11-slim
       volumes:
-        - .m2:/root/.m2
-        - settings.xml:/root/.m2/settings.xml
-        - .:/src
+        - ./.m2:/root/.m2
+        - ./settings.xml:/root/.m2/settings.xml
+        - ./:/src
       options: -w /src
 
     steps:
