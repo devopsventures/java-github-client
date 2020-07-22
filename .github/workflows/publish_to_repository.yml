@@ -36,5 +36,5 @@ jobs:
             -Dartifactory.user.name=${{ secrets.ARTIFACTORY_USERNAME }} \
             -Dartifactory.user.password=${{ secrets.ARTIFACTORY_PASSWORD }} \
             -DaltReleaseDeploymentRepository=artifactory::${{ secrets.ARTIFACTORY_RELEASE_REPOSITORY_URL }} \
-            -DaltReleaseDeploymentRepository=artifactory::${{ secrets.ARTIFACTORY_SNAPSHOT_REPOSITORY_URL }}
+            -DaltSnapshotDeploymentRepository=artifactory::${{ secrets.ARTIFACTORY_SNAPSHOT_REPOSITORY_URL }}
       
