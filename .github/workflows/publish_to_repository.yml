@@ -1,5 +1,19 @@
 name: Publish to Repository
 
+#
+# This workflow uses the actions/setup-java to provide a version of Java JDK to compile against and will
+# use the provided hosted runner Maven version.
+#
+# All dependencies are resolved via an Artifactory instance instead of going to the internet.
+#
+# The deployment is performed using the alternate repository URLs injected in on the command line so as
+# to direct the deployment to the Artifactory Maven repositories for releases and snapshots which are stored
+# as secrets at the Repository or Organization level.
+#
+# This is also a manually triggered workflow so as to control the deployments (but it can be automated by adding
+# other event triggers).
+#
+
 on:
   workflow_dispatch:
 
