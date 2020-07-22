@@ -1,0 +1,13 @@
+# Visual Studio Code
+.vscode
+.classpath
+.project
+.settings
+
+# Maven
+.m2
+target
+
+# IntelliJ IDEA
+.idea
+*.iml
