@@ -1,0 +1,35 @@
+name: Build and Test - Local
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build and Test
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Set up Java JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+          java-package: jdk
+
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+
+      - name: Cache Maven Repository
+        id: cache-maven-repository
+        uses: actions/cache@v2
+        with:
+          path: .m2/repository
+          key: ${{ runner.os }}-build-${{ hashFiles('**/pom.xml') }}
+
+      - name: Did we get a cache hit
+        run: echo "Cache Hit? ${{ steps.cache-maven-repository.outputs.cache-hit }}"
+
+      - name: Maven Build and Test
+        run: mvn test --batch-mode --settings ./settings.xml -Dartifactory.server.mirror.url=${{ secrets.ARTIFACTORY_SERVER_MIRROR_URL }} -Dartifactory.user.name=${{ secrets.ARTIFACTORY_USERNAME }} -Dartifactory.user.password=${{ secrets.ARTIFACTORY_PASSWORD }}
+      
