@@ -41,3 +41,31 @@ There is a use of the `actions/cache` action so as to cache the resolved depende
 The [`publish_to_repository.yml`](.github/workflows/publish_to_repository.yml) workflow showcases a deployment to a hosted Artifcatory instance, catering for both release and snapshots depending upon the version present in the POM file.
 
 This is a manually triggered workflow but could be modified to activate from any automation events that are relevant to your desired SDLC workflows.
+
+
+### GitHub Secrets
+The workflows are reliant on the following Secrets being present to the repository:
+
+* `ARTIFACTORY_USERNAME`: The username for the Artifactory user that GitHub Actions will run as
+* `ARTIFACTORY_PASSWORD`: The password or API Key for the Artifactory user that GitHub Actions will run as
+* `ARTIFACTORY_SERVER_MIRROR_URL`: The URL to the virtual repository that can be used as a mirror to resolve Maven plugins and dependencies for the project, e.g. https://my-aritfactory-server.domain.com:8081/artifactory/maven
+* `ARTIFACTORY_SNAPSHOT_REPOSITORY_URL`: The URL to the hosted maven repository for SNAPSHOT artifacts in Artifactory, e.g. https://my-aritfactory-server.domain.com:8081/artifactory/libs-snapshot-local
+* `ARTIFACTORY_RELEASE_REPOSITORY_URL`: The URL to the hosted maven repository for SNAPSHOT artifacts in Artifactory, e.g. https://my-aritfactory-server.domain.com:8081/artifactory/libs-release-local
+
+
+### Local Development
+You can build and run this project locally using installed versions of a Java JDK and Maven or alternatively use Docker or podman to use a container to build and test your project.
+
+From the directory that you have checked out the sources from:
+
+```bash
+$ docker run -v `pwd`:/src -w /src -w /src \
+    -v `pwd`/.m2:/root/.m2 \
+    -v `pwd`/settings.xml:/root/.m2/settings.xml \
+    -e GITHUB_TEST_TOKEN=db3e7996e5daeba7f899f8cef60c849a426038b5 \
+    maven:3.6.3-jdk-11-slim mvn \
+    -Dartifactory.server.mirror.url="http://x.x.x.x:8081/artifactory/maven" \
+    -Dartifactory.user.name=github-actions \
+    -Dartifactory.user.password="xxxxxxxxxxxxxxx" \
+    package
+```
