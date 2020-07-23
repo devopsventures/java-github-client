@@ -36,8 +36,11 @@ jobs:
         run: echo "Cache Hit? ${{ steps.cache-maven-repository.outputs.cache-hit }}"
 
       - name: Maven Build and Test
+        env:
+          GITHUB_TEST_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mvn test --batch-mode --settings ./settings.xml \
             -Dartifactory.server.mirror.url=${{ secrets.ARTIFACTORY_SERVER_MIRROR_URL }} \
             -Dartifactory.user.name=${{ secrets.ARTIFACTORY_USERNAME }} \
             -Dartifactory.user.password=${{ secrets.ARTIFACTORY_PASSWORD }}
+        shell: bash
