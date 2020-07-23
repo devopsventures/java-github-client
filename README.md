@@ -51,7 +51,7 @@ The workflows are reliant on the following Secrets being present to the reposito
 * `ARTIFACTORY_SERVER_MIRROR_URL`: The URL to the virtual repository that can be used as a mirror to resolve Maven plugins and dependencies for the project, e.g. https://my-aritfactory-server.domain.com:8081/artifactory/maven
 * `ARTIFACTORY_SNAPSHOT_REPOSITORY_URL`: The URL to the hosted maven repository for SNAPSHOT artifacts in Artifactory, e.g. https://my-aritfactory-server.domain.com:8081/artifactory/libs-snapshot-local
 * `ARTIFACTORY_RELEASE_REPOSITORY_URL`: The URL to the hosted maven repository for SNAPSHOT artifacts in Artifactory, e.g. https://my-aritfactory-server.domain.com:8081/artifactory/libs-release-local
-
+* `TESTING_GITHUB_TOKEN`: A GitHub PAT (Personal Access Token) that can be used to testing the GitHub Client libraries, if not set the tests will be skipped. Needs Read access to repositories (preferrably public only).
 
 ### Local Development
 You can build and run this project locally using installed versions of a Java JDK and Maven or alternatively use Docker or podman to use a container to build and test your project.
