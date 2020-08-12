@@ -1,4 +1,4 @@
-name: Build and Test - Docker
+name: Build and Test - Docker run variant
 
 #
 # This workflow uses the offical Docker Hub maven image to provide a version of Maven and Java JDK for use in 
