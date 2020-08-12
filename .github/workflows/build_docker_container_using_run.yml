@@ -1,0 +1,55 @@
+name: Build and Test - Docker
+
+#
+# This workflow uses the offical Docker Hub maven image to provide a version of Maven and Java JDK for use in 
+# building the project.
+#
+# The difference in this workflow is that it pulls the container and tags it locally and uses the local tag to run
+# a building using the docker command line client to invoke it.
+# The reason for doing this is to show how you might perform this type of activity against a container that comes from a
+# registry that is private or requires authentication to retrive the container image. Due to the way GitHub Actions currently
+# operates (August 2020), it is not possible to perform this authentication step when using jobs.<job_id>.container.
+#
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build and Test
+
+    runs-on: ubuntu-20.04
+
+    env:
+      LOCAL_CONTAINER_NAME_AND_TAG: my-builder:latest
+
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+
+      - name: Cache Maven Repository
+        id: cache-maven-repository
+        uses: actions/cache@v2
+        with:
+          path: .m2/repository
+          key: ${{ runner.os }}-build-${{ hashFiles('**/pom.xml') }}
+
+      - name: Did we get a cache hit
+        run: echo "Cache Hit? ${{ steps.cache-maven-repository.outputs.cache-hit }}"
+
+      # If the registry that hosts the container required authentication, you would need to perform the necessary
+      # authentication steps before getting the container next
+
+      - name: Get Container and set local tag
+        env:
+          CONTAINER: maven:3.6.3-jdk-11-slim
+        run: |
+          docker pull $CONTAINER
+          docker tag $CONTAINER $LOCAL_CONTAINER_NAME_AND_TAG
+
+      # Execute the local/private container to perform out build
+      - name: Maven Build and Test
+        run: |
+          docker run -v${{ github.workspace }}:/workspace  -w /workspace $LOCAL_CONTAINER_NAME_AND_TAG mvn test --batch-mode
+        shell: bash
